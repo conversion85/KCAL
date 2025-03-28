@@ -290,6 +290,26 @@ button:active {
     border: 1px solid rgba(255, 255, 255, 0.1);
     position: relative;
     transition: all 0.3s ease;
+    touch-action: pan-y pinch-zoom;
+    user-select: none;
+    cursor: grab;
+}
+
+.history-entry:active {
+    cursor: grabbing;
+}
+
+.history-entry.swiping {
+    transition: transform 0.1s ease;
+}
+
+.history-entry .content-wrapper {
+    position: relative;
+    z-index: 2;
+    background: inherit;
+    border-radius: inherit;
+    padding: inherit;
+    margin: -0.8rem;
 }
 
 .history-entry:hover {
@@ -637,5 +657,162 @@ button:active {
     
     .container {
         margin-bottom: 0;
+    }
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 0.6rem;
+    background: linear-gradient(45deg, #3d3d3d, #2d2d2d);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tab-btn:hover {
+    background: linear-gradient(45deg, #4d4d4d, #3d3d3d);
+}
+
+.tab-btn.active {
+    background: linear-gradient(45deg, #007bff, #00ff88);
+    border-color: transparent;
+}
+
+.tab-content {
+    display: none;
+    width: 100%;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Calculator */
+.calculator {
+    background: linear-gradient(45deg, #3d3d3d, #2d2d2d);
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.calc-display {
+    margin-bottom: 1rem;
+}
+
+.calc-display input {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.5rem;
+    text-align: right;
+    background: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #fff;
+}
+
+.calc-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+}
+
+.calc-btn {
+    padding: 1rem;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(45deg, #4d4d4d, #3d3d3d);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.calc-btn:hover {
+    background: linear-gradient(45deg, #5d5d5d, #4d4d4d);
+}
+
+.calc-btn.operator {
+    background: linear-gradient(45deg, #007bff, #00ff88);
+}
+
+.calc-btn.operator:hover {
+    background: linear-gradient(45deg, #0088ff, #00ffaa);
+}
+
+.calc-btn.equals {
+    background: linear-gradient(45deg, #ff4444, #ff0000);
+}
+
+.calc-btn.equals:hover {
+    background: linear-gradient(45deg, #ff5555, #ff1111);
+}
+
+.calc-btn.clear {
+    background: linear-gradient(45deg, #ff8800, #ff4400);
+}
+
+.calc-btn.clear:hover {
+    background: linear-gradient(45deg, #ff9900, #ff5500);
+}
+
+.calc-btn.zero {
+    grid-column: span 2;
+}
+
+/* Responsive Anpassungen für den Taschenrechner */
+@media (max-width: 480px) {
+    .calc-btn {
+        padding: 0.8rem;
+        font-size: 1rem;
+    }
+
+    .calc-display input {
+        padding: 0.8rem;
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 320px) {
+    .calc-btn {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+
+    .calc-display input {
+        padding: 0.6rem;
+        font-size: 1.1rem;
+    }
+}
+
+/* Responsive Anpassungen für Tabs */
+@media (max-width: 480px) {
+    .tab-btn {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 320px) {
+    .tab-btn {
+        padding: 0.4rem;
+        font-size: 0.75rem;
     }
 }

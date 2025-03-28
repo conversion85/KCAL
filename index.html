@@ -15,49 +15,143 @@
         <div class="food-icon salad">🥗</div>
         <div class="food-icon sushi">🍱</div>
     </div>
+    <style>
+        .tab-btn {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .tab-btn:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .tab-btn.active {
+            background-color: #357a38;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+            transform: translateY(1px);
+        }
+
+        #calculateBtn {
+            background-color: #2196F3;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            font-size: 18px;
+            margin: 20px auto;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+            width: 200px;
+        }
+
+        #calculateBtn:hover {
+            background-color: #1976D2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        #calculateBtn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+    </style>
 
     <div class="container">
         <h1>Kalorien pro Portion Rechner</h1>
 
-        <div class="input-group">
-            <label for="foodName">Name des Lebensmittels:</label>
-            <input type="text" id="foodName" placeholder="z.B. Apfel">
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="calculator">Rechner</button>
+            <button class="tab-btn" data-tab="history">Log</button>
+            <button class="tab-btn" data-tab="calc">Calc</button>
         </div>
 
-        <div class="input-group">
-            <label for="totalWeight">Gesamtgewicht/Volumen (in g oder ml):</label>
-            <input type="number" id="totalWeight" placeholder="z.B. 200">
+        <div class="tab-content active" id="calculator">
+            <div class="input-group">
+                <label for="foodName">Name des Lebensmittels:</label>
+                <input type="text" id="foodName" placeholder="z.B. Apfel">
+            </div>
+
+            <div class="input-group">
+                <label for="totalWeight">Gesamtgewicht/Volumen (in g oder ml):</label>
+                <input type="number" id="totalWeight" placeholder="z.B. 200">
+            </div>
+
+            <div class="input-group">
+                <label for="totalCalories">Gesamtkalorien:</label>
+                <input type="number" id="totalCalories" placeholder="z.B. 100">
+            </div>
+
+            <div class="input-group">
+                <label for="servingSize">Portionsgröße (in g oder ml):</label>
+                <input type="number" id="servingSize" placeholder="z.B. 100">
+            </div>
+
+            <button id="calculateBtn">Berechnen</button>
+
+            <div id="result" class="result">
+            </div>
+
+            <div id="share-buttons" class="share-buttons">
+                <h3>Teilen:</h3>
+                <a href="#" id="shareWhatsapp" target="_blank" title="Auf WhatsApp teilen">
+                    <img src="whatsapp-icon.png" alt="WhatsApp">
+                </a>
+                <a href="#" id="shareEmail" title="Per E-Mail teilen">
+                    <img src="email-icon.png" alt="E-Mail">
+                </a>
+            </div>
         </div>
 
-        <div class="input-group">
-            <label for="totalCalories">Gesamtkalorien:</label>
-            <input type="number" id="totalCalories" placeholder="z.B. 100">
-        </div>
-
-        <div class="input-group">
-            <label for="servingSize">Portionsgröße (in g oder ml):</label>
-            <input type="number" id="servingSize" placeholder="z.B. 100">
-        </div>
-
-        <button id="calculateBtn">Berechnen</button>
-
-        <div id="result" class="result">
-        </div>
-
-        <div id="history" class="history">
+        <div class="tab-content" id="history">
             <h3>Verlauf</h3>
             <div id="history-entries" class="history-entries">
             </div>
         </div>
 
-        <div id="share-buttons" class="share-buttons">
-            <h3>Teilen:</h3>
-            <a href="#" id="shareWhatsapp" target="_blank" title="Auf WhatsApp teilen">
-                <img src="whatsapp-icon.png" alt="WhatsApp">
-            </a>
-            <a href="#" id="shareEmail" title="Per E-Mail teilen">
-                <img src="email-icon.png" alt="E-Mail">
-            </a>
+        <div class="tab-content" id="calc">
+            <div class="calculator">
+                <div class="calc-display">
+                    <input type="text" id="calcResult" readonly>
+                </div>
+                <div class="calc-buttons">
+                    <button class="calc-btn clear">C</button>
+                    <button class="calc-btn operator">±</button>
+                    <button class="calc-btn operator">%</button>
+                    <button class="calc-btn operator">÷</button>
+                    <button class="calc-btn number">7</button>
+                    <button class="calc-btn number">8</button>
+                    <button class="calc-btn number">9</button>
+                    <button class="calc-btn operator">×</button>
+                    <button class="calc-btn number">4</button>
+                    <button class="calc-btn number">5</button>
+                    <button class="calc-btn number">6</button>
+                    <button class="calc-btn operator">-</button>
+                    <button class="calc-btn number">1</button>
+                    <button class="calc-btn number">2</button>
+                    <button class="calc-btn number">3</button>
+                    <button class="calc-btn operator">+</button>
+                    <button class="calc-btn number zero">0</button>
+                    <button class="calc-btn number">.</button>
+                    <button class="calc-btn equals">=</button>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -42,15 +42,61 @@ document.addEventListener('DOMContentLoaded', function() {
             entryDiv.className = 'history-entry';
             
             entryDiv.innerHTML = `
-                <div class="date">${entry.date}</div>
-                <div class="content">
-                    ${entry.foodName}: ${entry.caloriesPerServing.toFixed(2)} kcal 
-                    pro ${entry.servingSize}g
+                <div class="content-wrapper">
+                    <div class="date">${entry.date}</div>
+                    <div class="content">
+                        ${entry.foodName}: ${entry.caloriesPerServing.toFixed(2)} kcal 
+                        pro ${entry.servingSize}g
+                    </div>
+                    <span class="share-icon" onclick="shareHistoryEntry(${index})">
+                        🔗
+                    </span>
                 </div>
-                <span class="share-icon" onclick="shareHistoryEntry(${index})">
-                    🔗
-                </span>
             `;
+            
+            // Swipe-to-Delete Funktionalität
+            let startX = 0;
+            let currentX = 0;
+            let isDragging = false;
+            const contentWrapper = entryDiv.querySelector('.content-wrapper');
+            
+            entryDiv.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+                entryDiv.classList.add('swiping');
+            }, { passive: true });
+            
+            entryDiv.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                currentX = e.touches[0].clientX;
+                const diff = currentX - startX;
+                
+                // Begrenze das Swipen nach rechts
+                if (diff > 0) return;
+                
+                // Begrenze das Swipen nach links auf 100px
+                const maxSwipe = -100;
+                const swipeAmount = Math.max(diff, maxSwipe);
+                
+                contentWrapper.style.transform = `translateX(${swipeAmount}px)`;
+            }, { passive: true });
+            
+            entryDiv.addEventListener('touchend', () => {
+                if (!isDragging) return;
+                isDragging = false;
+                entryDiv.classList.remove('swiping');
+                
+                const diff = currentX - startX;
+                if (diff < -80) {
+                    // Wenn mehr als 80px nach links geswiped wurde, lösche den Eintrag
+                    history.splice(index, 1);
+                    localStorage.setItem('calorieHistory', JSON.stringify(history));
+                    updateHistoryDisplay();
+                } else {
+                    // Sonst setze zurück
+                    contentWrapper.style.transform = 'translateX(0)';
+                }
+            });
             
             historyEntriesDiv.appendChild(entryDiv);
         });
@@ -184,4 +230,93 @@ document.addEventListener('DOMContentLoaded', function() {
             }, { once: true });
         });
     });
+
+    // Tab Navigation
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Entferne active Klasse von allen Buttons und Contents
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            // Füge active Klasse zum geklickten Button und entsprechenden Content hinzu
+            button.classList.add('active');
+            const tabId = button.getAttribute('data-tab');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+
+    // Calculator Funktionalität
+    const calcResult = document.getElementById('calcResult');
+    const calcButtons = document.querySelectorAll('.calc-btn');
+    let currentValue = '';
+    let previousValue = '';
+    let operation = null;
+
+    calcButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const value = button.textContent;
+
+            if (button.classList.contains('number')) {
+                currentValue += value;
+                calcResult.value = currentValue;
+            } else if (button.classList.contains('operator')) {
+                if (currentValue === '') return;
+                if (previousValue !== '') {
+                    calculate();
+                }
+                operation = value;
+                previousValue = currentValue;
+                currentValue = '';
+            } else if (button.classList.contains('equals')) {
+                if (currentValue === '' || previousValue === '' || operation === null) return;
+                calculate();
+                operation = null;
+                previousValue = '';
+                return;
+            } else if (button.classList.contains('clear')) {
+                currentValue = '';
+                previousValue = '';
+                operation = null;
+                calcResult.value = '';
+            }
+        });
+    });
+
+    function calculate() {
+        let result;
+        const prev = parseFloat(previousValue);
+        const current = parseFloat(currentValue);
+
+        switch (operation) {
+            case '+':
+                result = prev + current;
+                break;
+            case '-':
+                result = prev - current;
+                break;
+            case '×':
+                result = prev * current;
+                break;
+            case '÷':
+                if (current === 0) {
+                    calcResult.value = 'Error';
+                    return;
+                }
+                result = prev / current;
+                break;
+            case '%':
+                result = prev % current;
+                break;
+            default:
+                return;
+        }
+
+        // Runde das Ergebnis auf 2 Dezimalstellen
+        result = Math.round(result * 100) / 100;
+        currentValue = result.toString();
+        calcResult.value = currentValue;
+    }
 });
