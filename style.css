@@ -263,18 +263,17 @@ button:active {
     transform: translateY(-3px);
 }
 
-.share-buttons img {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
+.share-buttons .share-icon {
+    font-size: 2rem;
     opacity: 0.9;
     transition: all 0.3s ease;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
     position: relative;
     z-index: 2;
+    display: inline-block;
 }
 
-.share-buttons img:hover {
+.share-buttons .share-icon:hover {
     opacity: 1;
     transform: scale(1.1);
 }
