@@ -1,4 +1,23 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Dark Mode Funktionalität
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    
+    // Prüfe gespeicherte Einstellung
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        darkModeToggle.checked = true;
+    }
+    
+    darkModeToggle.addEventListener('change', () => {
+        if (darkModeToggle.checked) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('darkMode', 'enabled');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('darkMode', null);
+        }
+    });
+
     const foodNameInput = document.getElementById('foodName');
     const totalWeightInput = document.getElementById('totalWeight');
     const totalCaloriesInput = document.getElementById('totalCalories');
@@ -107,29 +126,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const entry = history[index];
         const shareText = `${entry.foodName}: ${entry.caloriesPerServing.toFixed(2)} kcal pro ${entry.servingSize}g (Berechnet am ${entry.date})`;
         
-        // Erstelle die Share-URLs
+        // Direkte Weiterleitung zu WhatsApp
         const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
-        const emailUrl = `mailto:?subject=Kalorienberechnung&body=${encodeURIComponent(shareText)}`;
-        
-        // Öffne ein kleines Menü zum Teilen
-        const shareMenu = document.createElement('div');
-        shareMenu.className = 'share-menu';
-        shareMenu.innerHTML = `
-            <a href="${whatsappUrl}" target="_blank">WhatsApp</a>
-            <a href="${emailUrl}">E-Mail</a>
-        `;
-        
-        // Positioniere das Menü neben dem geklickten Share-Icon
-        const shareIcon = event.target;
-        shareIcon.appendChild(shareMenu);
-        
-        // Entferne das Menü nach dem Klick außerhalb
-        document.addEventListener('click', function removeMenu(e) {
-            if (!shareMenu.contains(e.target) && e.target !== shareIcon) {
-                shareMenu.remove();
-                document.removeEventListener('click', removeMenu);
-            }
-        });
+        window.open(whatsappUrl, '_blank');
     };
 
     // Funktion zum Aktualisieren der Share-Links
@@ -179,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const caloriesPerServing = (totalCalories / totalWeight) * servingSize;
         const formattedCalories = caloriesPerServing.toFixed(2);
         resultDiv.textContent = `Kalorien pro Portion: ${formattedCalories}`;
-        
+
         // Füge den neuen Eintrag zum Verlauf hinzu
         addHistoryEntry(
             foodName,
