@@ -1,23 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Dark Mode Funktionalität
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    
-    // Prüfe gespeicherte Einstellung
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        darkModeToggle.checked = true;
-    }
-    
-    darkModeToggle.addEventListener('change', () => {
-        if (darkModeToggle.checked) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('darkMode', 'enabled');
-        } else {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('darkMode', null);
-        }
-    });
-
     const foodNameInput = document.getElementById('foodName');
     const totalWeightInput = document.getElementById('totalWeight');
     const totalCaloriesInput = document.getElementById('totalCalories');
